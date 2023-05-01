@@ -9,7 +9,7 @@ const cors = require('cors')
 
 // Routers
 // const blogsRouter = require('./controllers/blogs')
-const usersRouter = require('./controllers/users')
+const usersRouter = require('./controllers/usuarios')
 const loginRouter = require('./controllers/login')
 
 const middleware = require('./utils/middleware')
@@ -35,7 +35,7 @@ app.use(middleware.tokenExtractor)
 // use the middleware only in /api/blogs routes
 // app.use('/api/blogs', middleware.userExtractor, blogsRouter)// El enrutador que definimos anteriormente se usa si la URL de la solicitud comienza con /api/blogs.
 // Por esta razón, el objeto blogsRouter en blogs.js solo debe definir las partes relativas de las rutas, es decir, la ruta vacía / o solo el parámetro /:id.
-app.use('/api/users', usersRouter)
+app.use('/api/usuarios', usersRouter)
 app.use('/api/login', loginRouter)
 
 app.use(middleware.unknownEndpoint)

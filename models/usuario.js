@@ -1,6 +1,17 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
+const clienteSchema = mongoose.Schema({
+  direccion: {
+    type: String,
+    required: true
+  },
+  celular: {
+    type: Number,
+    required: true
+  }
+})
+
 const userSchema = mongoose.Schema({
   fullName: {
     type: String,
@@ -17,9 +28,8 @@ const userSchema = mongoose.Schema({
     unique: true
   },
   passwordHash: String,
-  birthdate: {
-    type: Date,
-    required: true
+  cliente: {
+    type: clienteSchema
   }
 })
 
@@ -35,6 +45,6 @@ userSchema.set('toJSON', {
   }
 })
 
-const User = mongoose.model('User', userSchema)
+const Usuario = mongoose.model('Usuario', userSchema)
 
-module.exports = User
+module.exports = Usuario

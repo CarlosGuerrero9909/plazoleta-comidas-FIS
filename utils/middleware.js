@@ -1,7 +1,7 @@
 // Los middleware son funciones que se pueden utilizar para manejar objetos de request y response.
 const logger = require('./logger')
 const jwt = require('jsonwebtoken')
-const User = require('./../models/user')
+const User = require('../models/usuario')
 
 const requestLogger = (request, response, next) => {
   logger.info('Method:', request.method)
