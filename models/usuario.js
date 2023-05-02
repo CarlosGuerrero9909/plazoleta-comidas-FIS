@@ -7,7 +7,7 @@ const clienteSchema = mongoose.Schema({
     required: true
   },
   celular: {
-    type: Number,
+    type: String,
     required: true
   }
 })
