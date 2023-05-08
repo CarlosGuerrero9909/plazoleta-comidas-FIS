@@ -15,6 +15,10 @@ const menuSchema = mongoose.Schema({
   restaurante: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Restaurante'
+  },
+  precioTotal: {
+    type: Number,
+    required: true
   }
 })
 
