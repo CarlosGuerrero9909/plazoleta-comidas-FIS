@@ -1,0 +1,11 @@
+POST http://localhost:3003/api/AdminRestaurante/restaurantes/menus/registrarMenu
+Content-Type: application/json
+
+{
+    "nombre": "Combo hamburguesa y Coca-Cola 250ml",
+    "productos": [
+        "64573825dda032165210050c",
+        "64573836dda0321652100510"
+    ],
+    "restaurante": "6455eea6471d96120a87b211"
+}

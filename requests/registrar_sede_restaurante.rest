@@ -1,0 +1,8 @@
+POST http://localhost:3003/api/AdminRestaurante/restaurantes/sedes
+Content-Type: application/json
+
+{
+    "direccion": "Cl 100 #25B 31",
+    "telefono": "1233456789",
+    "restaurante": "6455eea6471d96120a87b211"
+}

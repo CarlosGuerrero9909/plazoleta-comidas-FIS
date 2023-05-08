@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/AdminRestaurante/restaurantes/productos/registrarProductoCompuesto
+Content-Type: application/json
+
+{
+    "nombre": "Hamburguesa",
+    "clasificacion": "Plato fuerte",
+    "precio": 4500,
+    "productoCompuesto": {},
+    "restaurante": "6455ebe9b7bbe69ea881fc7a"
+}

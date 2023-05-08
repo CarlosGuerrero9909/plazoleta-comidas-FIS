@@ -1,0 +1,13 @@
+POST http://localhost:3003/api/usuarios
+Content-Type: application/json
+
+{
+    "fullName": "Pedro",
+    "rol": "Cliente",
+    "email": "pedrito@gmail.com",
+    "password": "pedrito123",
+    "cliente": {
+        "direccion": "Kr 26B #31B 49 sur",
+        "celular": 1234567890
+    }
+}

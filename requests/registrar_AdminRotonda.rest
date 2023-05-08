@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/usuarios
+Content-Type: application/json
+
+{
+    "fullName": "Carlos Alberto Jimenez",
+    "rol": "AdminRotonda",
+    "email": "carlos123@gmail.com",
+    "password": "carlos123"
+}

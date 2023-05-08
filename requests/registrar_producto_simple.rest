@@ -1,0 +1,12 @@
+POST http://localhost:3003/api/AdminRestaurante/restaurantes/productos/registrarProductoSimple
+Content-Type: application/json
+
+{
+    "nombre": "Gaseosa Coca-Cola 250ml",
+    "clasificacion": "Bebida",
+    "precio": 3000,
+    "productoSimple": {
+        "stock": 200
+    },
+    "restaurante": "6455ebe9b7bbe69ea881fc7a"
+}

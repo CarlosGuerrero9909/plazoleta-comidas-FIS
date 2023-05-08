@@ -1,0 +1,8 @@
+POST http://localhost:3003/api/AdminRotonda/restaurantes/registrarRestaurante
+Content-Type: application/json
+
+{
+    "nombre": "KFC",
+    "especialidad": "Pollo",
+    "adminRestaurante": "6455ebe9b7bbe69ea881fc7a"
+}
