@@ -14,6 +14,10 @@ const productoSchema = mongoose.Schema({
     type: Number,
     required: true
   },
+  imagen: {
+    type: String,
+    required: true
+  },
   productoSimple: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'ProductoSimple'

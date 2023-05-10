@@ -49,6 +49,7 @@ menusRouter.post('/registrarMenu', async (request, response) => {
   const menu = new Menu({
     nombre: body.nombre,
     productos: body.productos,
+    imagen: body.imagen,
     restaurante: body.restaurante,
     precioTotal
   })
