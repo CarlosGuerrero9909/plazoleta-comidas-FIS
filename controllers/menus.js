@@ -1,16 +1,7 @@
 const menusRouter = require('express').Router()
 const Menu = require('../models/menu')
 const Producto = require('../models/producto')
-const User = require('../models/usuario')
-const jwt = require('jsonwebtoken')
-
-const getTokenFrom = (request) => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
+const decodificarToken = require('../utils/loginSecurity')
 
 menusRouter.get('/', async (request, response) => {
   const menus = await Menu.find({}).populate('productos', { nombre: 1, clasificacion: 1, precio: 1 }).populate('restaurante', { nombre: 1 })
@@ -18,14 +9,10 @@ menusRouter.get('/', async (request, response) => {
 })
 
 menusRouter.post('/registrarMenu', async (request, response) => {
-  const token = getTokenFrom(request)
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  if (!token || !decodedToken.id) {
+  const usuario = await decodificarToken(request)
+  if (!usuario) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
-
-  const usuario = await User.findById(decodedToken.id)
-
   if (usuario.rol !== 'AdminRestaurante') {
     return response.status(401).json({ error: 'usuario no valido' })
   }

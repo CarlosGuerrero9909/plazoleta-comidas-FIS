@@ -1,21 +1,15 @@
 const sedesRouter = require('express').Router()
 const Sede = require('../models/sede')
 const Restaurante = require('../models/restaurante')
-const jwt = require('jsonwebtoken')
+const decodificarToken = require('../utils/loginSecurity')
 
-const getTokenFrom = (request) => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
-
-sedesRouter.post('/', async (request, response) => {
-  const token = getTokenFrom(request)
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  if (!token || !decodedToken.id) {
+sedesRouter.post('/registrarSede', async (request, response) => {
+  const usuario = await decodificarToken(request)
+  if (!usuario) {
     return response.status(401).json({ error: 'token missing or invalid' })
+  }
+  if (usuario.rol !== 'AdminRestaurante') {
+    return response.status(401).json({ error: 'usuario no valido' })
   }
 
   const body = request.body

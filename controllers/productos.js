@@ -3,16 +3,7 @@ const Producto = require('../models/producto')
 const ProductoSimple = require('../models/productoSimple')
 const Restaurante = require('../models/restaurante')
 // const ProductoCompuesto = require('../models/productoCompuesto')
-const User = require('../models/usuario')
-const jwt = require('jsonwebtoken')
-
-const getTokenFrom = (request) => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
+const decodificarToken = require('../utils/loginSecurity')
 
 productosRouter.get('/', async (request, response) => {
   const productos = await Producto.find({})
@@ -20,14 +11,10 @@ productosRouter.get('/', async (request, response) => {
 })
 
 productosRouter.post('/registrarProductoSimple', async (request, response) => {
-  const token = getTokenFrom(request)
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  if (!token || !decodedToken.id) {
+  const usuario = await decodificarToken(request)
+  if (!usuario) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
-
-  const usuario = await User.findById(decodedToken.id)
-
   if (usuario.rol !== 'AdminRestaurante') {
     return response.status(401).json({ error: 'usuario no valido' })
   }
@@ -55,14 +42,10 @@ productosRouter.post('/registrarProductoSimple', async (request, response) => {
 })
 
 productosRouter.post('/registrarProductoCompuesto', async (request, response) => {
-  const token = getTokenFrom(request)
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  if (!token || !decodedToken.id) {
+  const usuario = await decodificarToken(request)
+  if (!usuario) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
-
-  const usuario = await User.findById(decodedToken.id)
-
   if (usuario.rol !== 'AdminRestaurante') {
     return response.status(401).json({ error: 'usuario no valido' })
   }
@@ -90,14 +73,10 @@ productosRouter.post('/registrarProductoCompuesto', async (request, response) =>
 })
 
 productosRouter.put('/actualizarProductoSimple/:id', async (request, response) => {
-  const token = getTokenFrom(request)
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  if (!token || !decodedToken.id) {
+  const usuario = await decodificarToken(request)
+  if (!usuario) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
-
-  const usuario = await User.findById(decodedToken.id)
-
   if (usuario.rol !== 'AdminRestaurante') {
     return response.status(401).json({ error: 'usuario no valido' })
   }
@@ -115,14 +94,10 @@ productosRouter.put('/actualizarProductoSimple/:id', async (request, response) =
 })
 
 productosRouter.delete('/eliminarProductoSimple/:id', async (request, response) => {
-  const token = getTokenFrom(request)
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  if (!token || !decodedToken.id) {
+  const usuario = await decodificarToken(request)
+  if (!usuario) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
-
-  const usuario = await User.findById(decodedToken.id)
-
   if (usuario.rol !== 'AdminRestaurante') {
     return response.status(401).json({ error: 'usuario no valido' })
   }
