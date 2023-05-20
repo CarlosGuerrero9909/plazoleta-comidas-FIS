@@ -14,6 +14,7 @@ const loginRouter = require('./controllers/login')
 const restaurantesRouter = require('./controllers/restaurantes')
 const sedesRouter = require('./controllers/sedes')
 const productosRouter = require('./controllers/productos')
+const ingredientesRouter = require('./controllers/ingredientes')
 const menusRouter = require('./controllers/menus').menusRouter
 
 const middleware = require('./utils/middleware')
@@ -46,6 +47,7 @@ app.use('/api/restaurantes', restaurantesRouter)
 app.use('/api/productos', productosRouter)
 app.use('/api/menus', menusRouter)
 app.use('/api/sedes', sedesRouter)
+app.use('/api/ingredientes', ingredientesRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
