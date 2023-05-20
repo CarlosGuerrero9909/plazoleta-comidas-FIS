@@ -8,7 +8,7 @@ sedesRouter.post('/registrarSede', async (request, response) => {
   if (!usuario) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
-  if (usuario.rol !== 'AdminRestaurante') {
+  if (usuario.rol !== 'AdminRotonda') {
     return response.status(401).json({ error: 'usuario no valido' })
   }
 
