@@ -14,7 +14,7 @@ const loginRouter = require('./controllers/login')
 const restaurantesRouter = require('./controllers/restaurantes')
 const sedesRouter = require('./controllers/sedes')
 const productosRouter = require('./controllers/productos')
-const menusRouter = require('./controllers/menus')
+const menusRouter = require('./controllers/menus').menusRouter
 
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
