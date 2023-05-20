@@ -1,0 +1,7 @@
+POST http://localhost:3003/api/AdminRestaurante/restaurantes/productos/registrarIngrediente
+Content-Type: application/json
+
+{
+    "nombre": "Pan integral",
+    "stock": 200
+}
