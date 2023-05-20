@@ -5,6 +5,10 @@ const decodificarToken = require('../utils/loginSecurity')
 
 menusRouter.get('/', async (request, response) => {
   const menus = await Menu.find({}).populate('productos', { nombre: 1, clasificacion: 1, precio: 1 }).populate('restaurante', { nombre: 1 })
+  menus.forEach((menu)=>{
+    menu.precioTotal = calcularIva(menu.precioTotal)
+  })
+  // se calcula el precio con iva y se muestra con la respuesta del servidor
   response.json(menus)
 })
 
@@ -45,4 +49,14 @@ menusRouter.post('/registrarMenu', async (request, response) => {
   response.json(menuSaved)
 })
 
-module.exports = menusRouter
+const calcularIva = (request)=>{
+  const iva =  19 // porcentaje de iva
+  let precioTotalConIva = request
+  precioTotalConIva += precioTotalConIva*iva/100
+  return precioTotalConIva
+}
+
+module.exports = {
+  menusRouter,
+  calcularIva
+}
