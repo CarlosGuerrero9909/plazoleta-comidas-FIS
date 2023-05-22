@@ -110,7 +110,7 @@ productosRouter.put('/actualizarStock/:id', async (request, response) => {
   response.json(productoAct)
 })
 
-productosRouter.delete('/eliminarProductoSimple/:id', async (request, response) => {
+productosRouter.delete('/eliminar/:id', async (request, response) => {
   const usuario = await decodificarToken(request)
   if (!usuario) {
     return response.status(401).json({ error: 'token missing or invalid' })
