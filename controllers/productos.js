@@ -63,7 +63,7 @@ productosRouter.post('/registrarProductoCompuesto', async (request, response) =>
     nombre: body.nombre,
     clasificacion: body.clasificacion,
     precio: body.precio,
-    imagen: body.precio,
+    imagen: body.imagen,
     // productoCompuesto: productoCompuestoSaved._id,
     restaurante: restaurante._id
   })
