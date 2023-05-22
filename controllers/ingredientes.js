@@ -37,13 +37,24 @@ ingredientesRouter.put('/actualizarStock/:id', async (request, response) => {
     }
   
     const body = request.body
-  
+    const stockActual = await Ingrediente.findById(request.params.id)
+
     const ingrediente = ({
-      stock: body.stock
+      stock: actualizarStock(stockActual.stock,body.stock)
     })
   
     const ingredienteAct = await Ingrediente.findByIdAndUpdate(request.params.id, ingrediente, { new: true })
     response.json(ingredienteAct)
 })
 
-module.exports = ingredientesRouter
+const actualizarStock = ( actual, extra )=>{
+  if( extra <= 0 ){
+    return actual // si el stock a añadir es cero o negativo no se actualiza
+  }
+  return actual + extra
+}
+
+module.exports = {
+  ingredientesRouter,
+  actualizarStock
+}

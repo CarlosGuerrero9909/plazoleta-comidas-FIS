@@ -20,7 +20,9 @@ restaurantesRouter.post('/registrarRestaurante', async (request, response) => {
   const resaturante = new Restaurante({
     nombre: body.nombre,
     especialidad: body.especialidad,
-    adminRestaurante: body.adminRestaurante
+    adminRestaurante: body.adminRestaurante,
+    logo: body.logo,
+    banner: body.banner
   })
 
   const savedRestaurante = await resaturante.save()

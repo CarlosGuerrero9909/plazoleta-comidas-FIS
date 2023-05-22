@@ -1,9 +1,9 @@
 const productosRouter = require('express').Router()
+const { get } = require('mongoose')
 const Producto = require('../models/producto')
-const ProductoSimple = require('../models/productoSimple')
 const Restaurante = require('../models/restaurante')
-// const ProductoCompuesto = require('../models/productoCompuesto')
 const decodificarToken = require('../utils/loginSecurity')
+const actualizarStock = require('../controllers/ingredientes').actualizarStock
 
 productosRouter.get('/', async (request, response) => {
   const productos = await Producto.find({})
@@ -21,11 +21,6 @@ productosRouter.post('/registrarProductoSimple', async (request, response) => {
 
   const body = request.body
 
-  const productoSimple = new ProductoSimple({
-    stock: body.productoSimple.stock
-  })
-
-  const productoSimpleSaved = await productoSimple.save()
   const restaurante = await Restaurante.findById(body.restaurante)
 
   const producto = new Producto({
@@ -33,7 +28,7 @@ productosRouter.post('/registrarProductoSimple', async (request, response) => {
     clasificacion: body.clasificacion,
     precio: body.precio,
     imagen: body.imagen,
-    productoSimple: productoSimpleSaved._id,
+    stockProductoSimple: body?.stock,
     restaurante: restaurante._id
   })
 
@@ -52,11 +47,6 @@ productosRouter.post('/registrarProductoCompuesto', async (request, response) =>
 
   const body = request.body
 
-  /* const productoCompuesto = new ProductoCompuesto({
-    ingredientes: body.ingredientes
-  })
-
-  const productoCompuestoSaved = productoCompuesto.save() */
   const restaurante = await Restaurante.findById(body.restaurante)
 
   const producto = new Producto({
@@ -64,7 +54,7 @@ productosRouter.post('/registrarProductoCompuesto', async (request, response) =>
     clasificacion: body.clasificacion,
     precio: body.precio,
     imagen: body.imagen,
-    // productoCompuesto: productoCompuestoSaved._id,
+    // ingredientesProductoCompuesto: body?.ingredientes,
     restaurante: restaurante._id
   })
 
@@ -72,7 +62,7 @@ productosRouter.post('/registrarProductoCompuesto', async (request, response) =>
   response.json(productoSaved)
 })
 
-productosRouter.put('/actualizarProductoSimple/:id', async (request, response) => {
+productosRouter.put('/actualizar/:id', async (request, response) => {
   const usuario = await decodificarToken(request)
   if (!usuario) {
     return response.status(401).json({ error: 'token missing or invalid' })
@@ -83,10 +73,37 @@ productosRouter.put('/actualizarProductoSimple/:id', async (request, response) =
 
   const body = request.body
 
+  const p = await Producto.findById(request.params.id)
+
   const producto = {
-    nombre: body.nombre,
-    precio: body.precio,
-    imagen: body.imagen
+    nombre: (!body.nombre) ? p.nombre : body.nombre,
+    precio: (!body.precio) ? p.precio : body.precio,
+    imagen: (!body.imagen) ? p.imagen : body.imagen,
+  }
+
+  const productoAct = await Producto.findByIdAndUpdate(request.params.id, producto, { new: true })
+  response.json(productoAct)
+})
+
+productosRouter.put('/actualizarStock/:id', async (request, response) => {
+  const usuario = await decodificarToken(request)
+  if (!usuario) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+  if (usuario.rol !== 'AdminRestaurante') {
+    return response.status(401).json({ error: 'usuario no valido' })
+  }
+
+  const body = request.body
+  
+  if(body.stock == undefined){
+    return response.status(401).json({ error: 'Producto compuesto no tiene stock' })
+  }
+
+  const stockActual = await Producto.findById(request.params.id)
+
+  const producto = {
+    stockProductoSimple: actualizarStock(stockActual.stockProductoSimple,body.stock)
   }
 
   const productoAct = await Producto.findByIdAndUpdate(request.params.id, producto, { new: true })
@@ -102,10 +119,7 @@ productosRouter.delete('/eliminarProductoSimple/:id', async (request, response) 
     return response.status(401).json({ error: 'usuario no valido' })
   }
 
-  const producto = await Producto.findById(request.params.id)
-
   await Producto.findByIdAndRemove(request.params.id)
-  await ProductoSimple.findByIdAndRemove(producto.productoSimple)
   response.status(204).end()
 })
 

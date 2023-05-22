@@ -3,6 +3,11 @@ const Sede = require('../models/sede')
 const Restaurante = require('../models/restaurante')
 const decodificarToken = require('../utils/loginSecurity')
 
+sedesRouter.get('/', async (request, response) => {
+  const sedes = await Sede.find({})
+  response.json(sedes)
+})
+
 sedesRouter.post('/registrarSede', async (request, response) => {
   const usuario = await decodificarToken(request)
   if (!usuario) {
