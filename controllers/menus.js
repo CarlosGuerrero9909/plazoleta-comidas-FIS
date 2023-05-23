@@ -2,6 +2,7 @@ const menusRouter = require('express').Router()
 const Menu = require('../models/menu')
 const Producto = require('../models/producto')
 const decodificarToken = require('../utils/loginSecurity')
+const Restaurante = require('../models/restaurante')
 
 menusRouter.get('/', async (request, response) => {
   const menus = await Menu.find({}).populate('productos', { nombre: 1, clasificacion: 1, precio: 1 }).populate('restaurante', { nombre: 1 })
@@ -45,7 +46,12 @@ menusRouter.post('/registrarMenu', async (request, response) => {
     precioTotal
   })
 
+  const restaurante = await Restaurante.findById(body.restaurante)
+
   const menuSaved = await menu.save()
+  restaurante.menus = restaurante.menus.concat(menuSaved._id)
+  await restaurante.save()
+
   response.json(menuSaved)
 })
 
