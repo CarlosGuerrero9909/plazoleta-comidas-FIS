@@ -8,7 +8,7 @@ const sedeSchema = mongoose.Schema({
     unique: true
   },
   telefono: {
-    type: Number,
+    type: String,
     required: true
   },
   restaurante: {
