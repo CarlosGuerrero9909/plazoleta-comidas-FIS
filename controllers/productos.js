@@ -1,6 +1,7 @@
 const productosRouter = require('express').Router()
 const Producto = require('../models/producto')
 const Restaurante = require('../models/restaurante')
+const Menu = require('../models/menu')
 const decodificarToken = require('../utils/loginSecurity')
 const actualizarStock = require('../controllers/ingredientes').actualizarStock
 
@@ -81,6 +82,24 @@ productosRouter.put('/actualizar/:id', async (request, response) => {
   }
 
   const productoAct = await Producto.findByIdAndUpdate(request.params.id, producto, { new: true })
+
+  if (body.precio) {
+    const menus = await Menu.find({ restaurante: p.restaurante, productos: { $in: [request.params.id] } }).populate('productos', { precio: 1 })
+    for (const menu of menus) {
+      let precioTotal = 0
+
+      menu.productos.forEach((producto) => {
+        precioTotal += producto.precio
+      })
+
+      const m = {
+        precioTotal
+      }
+
+      await Menu.findByIdAndUpdate(menu.id, m, { new: true })
+    }
+  }
+
   response.json(productoAct)
 })
 
