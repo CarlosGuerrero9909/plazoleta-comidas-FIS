@@ -1,5 +1,4 @@
 const productosRouter = require('express').Router()
-const { get } = require('mongoose')
 const Producto = require('../models/producto')
 const Restaurante = require('../models/restaurante')
 const decodificarToken = require('../utils/loginSecurity')
@@ -78,7 +77,7 @@ productosRouter.put('/actualizar/:id', async (request, response) => {
   const producto = {
     nombre: (!body.nombre) ? p.nombre : body.nombre,
     precio: (!body.precio) ? p.precio : body.precio,
-    imagen: (!body.imagen) ? p.imagen : body.imagen,
+    imagen: (!body.imagen) ? p.imagen : body.imagen
   }
 
   const productoAct = await Producto.findByIdAndUpdate(request.params.id, producto, { new: true })
@@ -95,15 +94,15 @@ productosRouter.put('/actualizarStock/:id', async (request, response) => {
   }
 
   const body = request.body
-  
-  if(body.stock == undefined){
+
+  if (body.stock === undefined) {
     return response.status(401).json({ error: 'Producto compuesto no tiene stock' })
   }
 
   const stockActual = await Producto.findById(request.params.id)
 
   const producto = {
-    stockProductoSimple: actualizarStock(stockActual.stockProductoSimple,body.stock)
+    stockProductoSimple: actualizarStock(stockActual.stockProductoSimple, body.stock)
   }
 
   const productoAct = await Producto.findByIdAndUpdate(request.params.id, producto, { new: true })
