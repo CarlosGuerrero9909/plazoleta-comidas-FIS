@@ -5,7 +5,7 @@ const decodificarToken = require('../utils/loginSecurity')
 const Restaurante = require('../models/restaurante')
 
 menusRouter.get('/', async (request, response) => {
-  const menus = await Menu.find({}).populate('productos', { nombre: 1, clasificacion: 1, precio: 1 }).populate('restaurante', { nombre: 1 })
+  const menus = await Menu.find({}).populate('productos', { nombre: 1, clasificacion: 1, precio: 1 }).populate('restaurante', { nombre: 1, logo: 1 })
   menus.forEach((menu) => {
     menu.precioTotal = calcularIva(menu.precioTotal)
   })
