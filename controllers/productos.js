@@ -137,6 +137,12 @@ productosRouter.delete('/eliminar/:id', async (request, response) => {
     return response.status(401).json({ error: 'usuario no valido' })
   }
 
+  const p = await Producto.findById(request.params.id)
+  const menus = await Menu.find({ restaurante: p.restaurante, productos: { $in: [request.params.id] } }).populate('productos', { precio: 1 })
+  if (menus.length > 0) {
+    return response.status(401).json({ error: 'El producto pertenece a un menu, no se puede eliminar' })
+  }
+
   await Producto.findByIdAndRemove(request.params.id)
   response.status(204).end()
 })
