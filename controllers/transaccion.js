@@ -8,17 +8,17 @@ require('../utils/carritoGlobal')
 
 transaccionRouter.get('/disponibilidad', async (request, response) => {
   const body = request.body
-  const menus = body?.menus
+  const menus = body
 
   global.globalCarrito = []
 
   const productos = []
 
   for (const menu of menus) {
-    const idProductos = menu.productos
+    const productosBD = menu.productos
 
-    for (const idProducto of idProductos) {
-      const productoBD = await Producto.findById(idProducto)
+    for (const producto of productosBD) {
+      const productoBD = await Producto.findById(producto.id)
 
       let repetido = false
 
