@@ -6,9 +6,15 @@ const calcularIva = require('./menus').calcularIva
 const decodificarToken = require('../utils/loginSecurity')
 require('../utils/carritoGlobal')
 
-transaccionRouter.get('/disponibilidad', async (request, response) => {
-  const body = request.body
-  const menus = body
+transaccionRouter.post('/disponibilidad', async (request, response) => {
+  const usuario = await decodificarToken(request)
+  if (!usuario) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+
+  const menus = request.body
+
+  console.log(menus)
 
   global.globalCarrito = []
 
@@ -74,7 +80,7 @@ transaccionRouter.post('/pago', async (request, response) => {
     totalPago += calcularIva(menu.precioTotal) * menu.quantity
   }
 
-  const dinero = Math.floor(Math.random() * (100000 - 40000) + 40000)
+  const dinero = 200000// Math.floor(Math.random() * (100000 - 40000) + 40000)
 
   if (dinero >= totalPago) {
     const menus = []
