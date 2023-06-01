@@ -30,7 +30,7 @@ transaccionRouter.get('/disponibilidad', async (request, response) => {
   response.json({ resultado: true })
 })
 
-transaccionRouter.get('/pago', async (request, response) => {
+transaccionRouter.post('/pago', async (request, response) => {
   const usuario = await decodificarToken(request)
   if (!usuario) {
     return response.status(401).json({ error: 'token missing or invalid' })
